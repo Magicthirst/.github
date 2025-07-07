@@ -1,0 +1,20 @@
+@startuml
+
+!theme plain
+
+component [Dashboard] as Dashboard <<Client Web App>>
+component [Magicthirst - Green] as UnityGame <<Multiplayer Game App>>
+component [Gateway] as Gateway <<API Gateway>>
+component [Auth] as Auth <<Authentication Service>>
+component [Hosts] as Hosts <<Host Config Service>>
+component [Syncing-Battleship] as SyncingBattleship <<Game Sync Service>>
+
+Dashboard --> Gateway : (HTTP)\nrequests
+UnityGame --> Gateway : (HTTP)\nGame Start/Join
+UnityGame --> SyncingBattleship : (Riptide)\nGame Synchronisation
+note right of link: Connection url through\nrequest to Gateway
+Gateway ---> Auth : (HTTP)\nValidates tokens
+Gateway ---> Hosts : (HTTP)\nManages host configs
+Gateway --> SyncingBattleship : (gRPC)\nManages sessions
+
+@enduml
